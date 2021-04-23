@@ -24,11 +24,6 @@ jobs:
         ref: gh-pages
         path: gh-pages
 
-    - name: Configure Git
-      run: |
-        git config user.name "$GITHUB_ACTOR"
-        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
     - name: Install Helm
       uses: azure/setup-helm@v1
       with:
@@ -44,6 +39,8 @@ jobs:
     - name: Push Changes to GH Pages
       run: |
         cd gh-pages
+        git config user.name "$GITHUB_ACTOR"
+        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
         git add .
         git commit -m "Updating Helm Chart Repository"
         git push
