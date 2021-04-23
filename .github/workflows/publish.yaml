@@ -85,12 +85,12 @@ jobs:
     - name: Create temp dir for helm publishing
       if: steps.image_tags.outputs.IMAGE_TAGS
       run:
-        cp -R helm /tmp/${{ env.IMAGE_NAME }}
+        cp -R helm helm/${{ env.IMAGE_NAME }}
 
     - name: Run chart-releaser
       if: steps.image_tags.outputs.IMAGE_TAGS
       uses: helm/chart-releaser-action@v1.2.0
       with:
-        charts_dir: "/tmp/${{ env.IMAGE_NAME }}"
+        charts_dir: "helm/${{ env.IMAGE_NAME }}"
       env:
         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
