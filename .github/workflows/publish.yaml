@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Set image tags
       id: image_tags
@@ -67,3 +69,28 @@ jobs:
         file: Dockerfile
         push: true
         tags: ${{ steps.image_tags.outputs.IMAGE_TAGS }}
+
+    - name: Configure Git
+      if: steps.image_tags.outputs.IMAGE_TAGS
+      run: |
+        git config user.name "$GITHUB_ACTOR"
+        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+    - name: Install Helm
+      if: steps.image_tags.outputs.IMAGE_TAGS
+      uses: azure/setup-helm@v1
+      with:
+        version: latest
+
+    - name: Create temp dir for helm publishing
+      if: steps.image_tags.outputs.IMAGE_TAGS
+      run:
+        cp -R helm /tmp/${{ env.IMAGE_NAME }}
+
+    - name: Run chart-releaser
+      if: steps.image_tags.outputs.IMAGE_TAGS
+      uses: helm/chart-releaser-action@v1.2.0
+      with:
+        charts_dir: "helm"
+      env:
+        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

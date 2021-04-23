@@ -3,5 +3,10 @@ apiVersion: v2
 name: anarchy
 description: Anarchy Operator
 type: application
-version: 0.14.2
+version: 0.14.3
 appVersion: 0.14.2
+
+dependencies:
+  - name: kopf
+    version: 0.1.0
+    repository: https://redhat-cop/github.io/helm-charts
