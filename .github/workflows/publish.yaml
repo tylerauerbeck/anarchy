@@ -7,7 +7,8 @@ on:
     tags:
     - 'v[0-9]*'
 jobs:
-  publish:
+  helm-charts:
+    needs: publish
     env:
       IMAGE_NAME: anarchy
     runs-on: ubuntu-latest
@@ -16,6 +17,44 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
+    - name: Checkout gh-pages
+      uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+        path: gh-pages
+
+          #    - name: Configure Git
+          #      run: |
+          #        git config user.name "$GITHUB_ACTOR"
+          #        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+    - name: Install Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: latest
+
+    - name: Package Helm Chart
+      run: |
+        helm dep up helm/
+        helm package helm/
+        mv ${{ env.IMAGE_NAME }}-*.tgz gh-pages
+        helm repo index --url https://redhat-cop.github.io/${{ env.IMAGE_NAME }} gh-pages
+
+    - name: Push Changes to GH Pages
+      run: |
+        cd gh-pages
+        git add .
+        git commit -m "Updating Helm Chart Repository"
+        git push
+
+  publish:
+    env:
+      IMAGE_NAME: anarchy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
 
     - name: Set image tags
       id: image_tags
@@ -69,28 +108,3 @@ jobs:
         file: Dockerfile
         push: true
         tags: ${{ steps.image_tags.outputs.IMAGE_TAGS }}
-
-    - name: Configure Git
-      if: steps.image_tags.outputs.IMAGE_TAGS
-      run: |
-        git config user.name "$GITHUB_ACTOR"
-        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-    - name: Install Helm
-      if: steps.image_tags.outputs.IMAGE_TAGS
-      uses: azure/setup-helm@v1
-      with:
-        version: latest
-
-    - name: Create temp dir for helm publishing
-      if: steps.image_tags.outputs.IMAGE_TAGS
-      run:
-        cp -R helm helm/${{ env.IMAGE_NAME }}
-
-    - name: Run chart-releaser
-      if: steps.image_tags.outputs.IMAGE_TAGS
-      uses: helm/chart-releaser-action@v1.2.0
-      with:
-        charts_dir: "helm/${{ env.IMAGE_NAME }}"
-      env:
-        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
