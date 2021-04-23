@@ -3,10 +3,10 @@ entries:
   anarchy:
   - apiVersion: v2
     appVersion: 0.14.9
-    created: "2021-04-23T20:36:52.846455252Z"
+    created: "2021-04-23T16:45:57.278592022-04:00"
     dependencies:
     - name: kopf
-      repository: https://tylerauerbeck.github.io/helm-charts
+      repository: https://redhat-cop.github.io/helm-charts
       version: 0.1.0
     description: Anarchy Operator
     digest: 4bb699923c7489bcf07f4d80cb520a8f909e066a23bb2fa7a628c332c10aa341
@@ -17,10 +17,10 @@ entries:
     version: 0.14.9
   - apiVersion: v2
     appVersion: 0.14.2
-    created: "2021-04-23T20:36:52.845327244Z"
+    created: "2021-04-23T16:45:57.277637648-04:00"
     dependencies:
     - name: kopf
-      repository: https://tylerauerbeck.github.io/helm-charts
+      repository: https://redhat-cop.github.io/helm-charts
       version: 0.1.0
     description: Anarchy Operator
     digest: 41055e5928323280e3950c4a0e054a8cfdc85db79ba833d06d34d9a94b5ee8ac
@@ -29,4 +29,4 @@ entries:
     urls:
     - https://tylerauerbeck.github.io/anarchy/anarchy-0.14.2.tgz
     version: 0.14.2
-generated: "2021-04-23T20:36:52.843897034Z"
+generated: "2021-04-23T16:45:57.276662806-04:00"
