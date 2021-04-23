@@ -34,7 +34,7 @@ jobs:
         helm dep up helm/
         helm package helm/
         mv ${{ env.IMAGE_NAME }}-*.tgz gh-pages
-        helm repo index --url https://redhat-cop.github.io/${{ env.IMAGE_NAME }} gh-pages
+        helm repo index --url https://tylerauerbeck.github.io/${{ env.IMAGE_NAME }} gh-pages
 
     - name: Push Changes to GH Pages
       run: |

@@ -3,8 +3,8 @@ apiVersion: v2
 name: anarchy
 description: Anarchy Operator
 type: application
-version: 0.14.9
-appVersion: 0.14.9
+version: 0.14.10
+appVersion: 0.14.10
 
 dependencies:
   - name: kopf
