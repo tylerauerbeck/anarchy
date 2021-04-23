@@ -91,6 +91,6 @@ jobs:
       if: steps.image_tags.outputs.IMAGE_TAGS
       uses: helm/chart-releaser-action@v1.2.0
       with:
-        charts_dir: "helm"
+        charts_dir: "/tmp/${{ env.IMAGE_NAME }}"
       env:
         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
